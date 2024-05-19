@@ -18,7 +18,12 @@ export class AppComponent implements OnInit {
 
   findSong() {
     this.input.nativeElement.value = '0fv2KH6hac06J86hBUTcSf';
-    const trackId = this.input.nativeElement.value;
+    const trackId = this.extractSpotifyTrackIdOrDefault(this.input.nativeElement.value);
+
+    if (!trackId) {
+      alert('Invalid track ID');
+      return;
+    }
 
     this.spotifyApi.tracks.get(trackId).then((track: Track) => {
 
@@ -28,4 +33,27 @@ export class AppComponent implements OnInit {
       alert(error);
     });
   }
+
+  extractSpotifyTrackIdOrDefault(input: string): string | null {
+    input = input.trim();
+
+    const trackIdPattern = /^[a-zA-Z0-9]{22}$/;
+    if (trackIdPattern.test(input)) {
+      return input;
+    }
+
+    const spotifyUriPattern = /^spotify:track:([a-zA-Z0-9]{22})$/;
+    let match = input.match(spotifyUriPattern);
+    if (match) {
+      return match[1];
+    }
+
+    const spotifyUrlPattern = /^http:\/\/open\.spotify\.com\/track\/([a-zA-Z0-9]{22})$/;
+    match = input.match(spotifyUrlPattern);
+    if (match) {
+      return match[1];
+    }
+
+    return null;
+  };
 }
