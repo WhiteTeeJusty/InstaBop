@@ -1,10 +1,9 @@
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div class="col-10 col-md-7 col-lg-5 col-xl-3">
     <div class="input-group mb-3">
-      <input type="text" class="form-control" placeholder="Search for your song..." aria-label="Search for your song..."
-        aria-describedby="button-search">
-
-      <button class="btn btn-primary" type="button" id="button-search">Search</button>
+      <input type="text" #input class="form-control" placeholder="Search for your song..."
+        aria-label="Search for your song..." (keyup.enter)="findSong()" aria-describedby="button-search">
+      <button class="btn btn-primary" type="button" id="button-search" (click)="findSong()">Search</button>
     </div>
   </div>
 </div>
